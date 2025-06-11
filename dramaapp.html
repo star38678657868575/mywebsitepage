@@ -1,0 +1,133 @@
+// Facebook Clone - Basic Version in React with Tailwind CSS
+// Step 1: App.js
+
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-gray-100">
+        <nav className="bg-blue-600 p-4 text-white flex justify-between">
+          <Link to="/" className="font-bold text-xl">Fakebook</Link>
+          <div>
+            <Link to="/profile" className="mr-4">Profile</Link>
+            <Link to="/login">Login</Link>
+          </div>
+        </nav>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+// Step 2: Home.js (in pages folder)
+import React, { useState } from "react";
+
+function Home() {
+  const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState("");
+
+  const handlePost = () => {
+    if (newPost.trim()) {
+      setPosts([{ text: newPost, likes: 0 }, ...posts]);
+      setNewPost("");
+    }
+  };
+
+  const handleLike = (index) => {
+    const updatedPosts = [...posts];
+    updatedPosts[index].likes++;
+    setPosts(updatedPosts);
+  };
+
+  return (
+    <div className="p-4 max-w-xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">News Feed</h1>
+      <div className="mb-4">
+        <textarea
+          className="w-full p-2 border rounded"
+          placeholder="What's on your mind?"
+          value={newPost}
+          onChange={(e) => setNewPost(e.target.value)}
+        ></textarea>
+        <button
+          onClick={handlePost}
+          className="bg-blue-600 text-white px-4 py-2 rounded mt-2"
+        >
+          Post
+        </button>
+      </div>
+      {posts.map((post, index) => (
+        <div key={index} className="bg-white p-4 rounded shadow mb-4">
+          <p>{post.text}</p>
+          <button
+            onClick={() => handleLike(index)}
+            className="text-blue-600 mt-2"
+          >
+            👍 {post.likes} Likes
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default Home;
+
+// Step 3: Profile.js
+import React from "react";
+
+function Profile() {
+  return (
+    <div className="p-4 max-w-xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
+      <p>Name: John Doe</p>
+      <p>Email: john@example.com</p>
+    </div>
+  );
+}
+
+export default Profile;
+
+// Step 4: Login.js
+import React from "react";
+
+function Login() {
+  return (
+    <div className="p-4 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Login</h1>
+      <input type="email" placeholder="Email" className="w-full mb-2 p-2 border rounded" />
+      <input type="password" placeholder="Password" className="w-full mb-2 p-2 border rounded" />
+      <button className="bg-blue-600 text-white px-4 py-2 rounded">Login</button>
+    </div>
+  );
+}
+
+export default Login;
+
+// Step 5: Signup.js
+import React from "react";
+
+function Signup() {
+  return (
+    <div className="p-4 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
+      <input type="text" placeholder="Name" className="w-full mb-2 p-2 border rounded" />
+      <input type="email" placeholder="Email" className="w-full mb-2 p-2 border rounded" />
+      <input type="password" placeholder="Password" className="w-full mb-2 p-2 border rounded" />
+      <button className="bg-green-600 text-white px-4 py-2 rounded">Sign Up</button>
+    </div>
+  );
+}
